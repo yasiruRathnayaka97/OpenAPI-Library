@@ -1,0 +1,158 @@
+openapi: 3.0.3
+info:
+  version: '1.0'
+  title: Library
+  description: Library management system
+components:
+  schemas:
+    Book:
+       type: object
+       properties:
+         title:
+           type: string
+         description:
+           type: string
+         isbn:
+           type: string
+         publication_date:
+           type: string
+           format: date
+       required: 
+         - isbn
+         - description
+       example:
+          title: Harry Potter and the Philosopher's Stone
+          author: J. K. Rowling
+          description: first edition of the book.Harry Potter, a young wizard ...
+          isbn: 0-7475-3269-9
+          publication_date: 26 June 1997
+    Message:
+       type: object
+       properties:
+         message:
+          type: string
+       required: 
+         - message
+       example:
+          message: successfull|fail|not_found|missing
+paths:
+    '/book':
+     post:
+       tags:
+        - Add book details
+       requestBody:
+         description: add book description
+         content: 
+           'application/json':
+             schema:
+               $ref: '#/components/schemas/Book'
+       responses:
+         '200':
+           description: Book deatils added succesfully 
+           content:
+             'application/json':
+               schema:
+                 $ref: '#/components/schemas/Message' 
+         '400':
+           description: Bad request
+           content:
+             'application/json':
+               schema:
+                 $ref: '#/components/schemas/Message' 
+         '500':
+           description: Book details failed to add
+           content:
+             'application/json':
+               schema:
+                 $ref: '#/components/schemas/Message'  
+     get:
+       tags:
+        - Get book details
+       parameters:
+        - name: isbn
+          in: query
+          description: get book details
+          required: true
+          example: 0-7475-3269-9
+          schema:
+            type: string
+       responses:
+         '200':
+           description: Book deatils retrieved succesfully | Book not found
+           content:
+             'application/json':
+               schema:
+                 $ref: '#/components/schemas/Message' 
+         '400':
+           description: Bad request
+           content:
+             'application/json':
+               schema:
+                 $ref: '#/components/schemas/Message' 
+         '500':
+           description: Book details failed to retrieve
+           content:
+             'application/json':
+               schema:
+                 $ref: '#/components/schemas/Message' 
+     put:
+       tags:
+        - Update book details
+       requestBody:
+         description: update book description
+         content: 
+           'application/json':
+             schema:
+               $ref: '#/components/schemas/Book'
+       responses:
+         '200':
+           description: Book deatils updated succesfully | Book not found
+           content:
+             'application/json':
+               schema:
+                 $ref: '#/components/schemas/Message' 
+         '400':
+           description: Bad request
+           content:
+             'application/json':
+               schema:
+                 $ref: '#/components/schemas/Message' 
+         '500':
+           description: Book details failed to update
+           content:
+             'application/json':
+               schema:
+                 $ref: '#/components/schemas/Message' 
+     delete:
+       tags:
+        - Delete book details
+       parameters:
+        - name: isbn
+          in: query
+          description: delete book details
+          required: true
+          example: 0-7475-3269-9
+          schema:
+            type: string
+       responses:
+         '200':
+           description: Book deatils deleted succesfully | Book not found
+           content:
+             'application/json':
+               schema:
+                 $ref: '#/components/schemas/Message' 
+         '400':
+           description: Bad request
+           content:
+             'application/json':
+               schema:
+                 $ref: '#/components/schemas/Message' 
+         '500':
+           description: Book details failed to delete
+           content:
+             'application/json':
+               schema:
+                 $ref: '#/components/schemas/Message'
+servers: 
+  - description: Library
+    url: http://localhost:8000/Library

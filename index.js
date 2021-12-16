@@ -5,6 +5,16 @@ const bookRoute = require('./APP/Routes/BookRoute')
 const cors = require('cors')
 const config = require('dotenv').config()
 
+const swaggerUi = require("swagger-ui-express")
+const YAML = require('yamljs')
+const swaggerDocument = YAML.load('./openapi.yaml')
+
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument)
+)
+
 app.use(cors());
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
